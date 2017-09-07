@@ -1,7 +1,9 @@
 package com.mycf.edittracker;
 
 import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -10,8 +12,10 @@ import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -30,7 +34,7 @@ public class ProjectsPage extends AppCompatActivity {
         myDb = new DatabaseHelper(this);
 
         ScrollView scrollView = (ScrollView) findViewById(R.id.all_projects_layout_scroll);
-
+        TextView titleView = (TextView) findViewById(R.id.textView_my_projects);
         Button newProjectButton = (Button) findViewById(R.id.new_project_button);
 
         displayAllProjects();
