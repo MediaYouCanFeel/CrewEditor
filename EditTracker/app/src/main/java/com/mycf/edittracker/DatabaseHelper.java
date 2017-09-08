@@ -58,6 +58,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //   PROJECTS   //
     //////////////////
     public boolean insertNewProject(String title) {
+        title = title.trim();
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("INSERT INTO " + TABLE_1_NAME + " (" + T1_COL_2 + ") VALUES ('" + title + "');");
         return true;
@@ -90,6 +91,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //   SCENES   //
     ////////////////
     public boolean insertNewScene(String projId, String number, String location, String time) {
+        number = number.trim();
+        location = location.trim();
+        time = time.trim();
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("INSERT INTO " + TABLE_2_NAME + " ("
                 + T2_COL_2 + "," + T2_COL_3 + "," + T2_COL_4 + "," + T2_COL_5 + ") VALUES ("
@@ -102,5 +106,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + T2_COL_2 + "='" + projId + "'", null);
         return res;
+    }
+
+    public String getSceneNumber(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_3 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        return res.getString(0);
+    }
+
+    public String getSceneLocation(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_4 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        return res.getString(0);
+    }
+
+    public String getSceneTime(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_5 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        return res.getString(0);
     }
 }

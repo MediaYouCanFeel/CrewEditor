@@ -82,10 +82,9 @@ public class ProjectPage extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
-        int height = size.y;
         while (res.moveToNext()) {
             RelativeLayout relativeLayout = new RelativeLayout(this);
+            final String sceneId = res.getString(0);
             final String sceneNumber = res.getString(2);
             final String sceneLocation = res.getString(3);
             final String sceneTime = res.getString(4);
@@ -95,7 +94,6 @@ public class ProjectPage extends AppCompatActivity {
 
             numberTextView.setText(sceneNumber);
             numberTextView.setTextSize(20);
-            //numberTextView.setTypeface(null, Typeface.BOLD);
             numberTextView.setTextColor(Color.parseColor("#000000"));
 
             locationTextView.setText(sceneLocation);
@@ -105,7 +103,6 @@ public class ProjectPage extends AppCompatActivity {
 
             timeTextView.setText(sceneTime);
             timeTextView.setTextSize(20);
-            //timeTextView.setTypeface(null, Typeface.BOLD);
             timeTextView.setTextColor(Color.parseColor("#000000"));
 
             relativeLayout.setBackground(getResources().getDrawable(R.drawable.border));
@@ -129,16 +126,15 @@ public class ProjectPage extends AppCompatActivity {
             relativeLayout.addView(locationTextView);
             relativeLayout.addView(timeTextView);
 
-//            relativeLayout.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(ProjectPage.this, ScenePage.class);
-//                    Bundle b = new Bundle();
-//                    b.putString("projectId", projectId); //Your id
-//                    intent.putExtras(b); //Put your id to your next Intent
-//                    startActivity(intent);
-//                }
-//            });
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HashMap<String, String> bundle = new HashMap<>();
+                    bundle.put("projectId", projId);
+                    bundle.put("sceneId", sceneId);
+                    CrewUtils.sendIntent(ProjectPage.this, ScenePage.class, bundle);
+                }
+            });
             linearLayout.addView(relativeLayout);
         }
     }
