@@ -29,7 +29,7 @@
         android:layout_alignParentEnd="true" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button_add_scene"
         android:layout_width="235dp"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
@@ -37,8 +37,29 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/buttonshape"
-        android:text="ADD PROJECT"
+        android:text="ADD SCENE"
         android:textColor="#FFFFFF"
         android:textSize="30sp" />
+
+    <ScrollView
+        android:id="@+id/all_scenes_layout_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:layout_below="@id/textView_project_title"
+        android:layout_above="@id/button_add_scene"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:id="@+id/all_scenes_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

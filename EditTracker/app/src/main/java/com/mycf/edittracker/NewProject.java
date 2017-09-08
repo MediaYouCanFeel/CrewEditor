@@ -31,7 +31,7 @@ public class NewProject extends AppCompatActivity {
         newProjectCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NewProject.this, ProjectsPage.class));
+                startActivity(new Intent(NewProject.this, ProjectPage.class));
             }
         });
 
@@ -42,11 +42,11 @@ public class NewProject extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        boolean isInserted = myDb.insertData(projectTitle.getText().toString());
+                        boolean isInserted = myDb.insertNewProject(projectTitle.getText().toString());
                         if(isInserted) {
-                            Toast.makeText(NewProject.this, "Data Inserted", Toast.LENGTH_LONG).show();
+                            Toast.makeText(NewProject.this, "New project added", Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(NewProject.this, "Data not Inserted", Toast.LENGTH_LONG).show();
+                            Toast.makeText(NewProject.this, "ERROR", Toast.LENGTH_LONG).show();
                         }
                         startActivity(new Intent(NewProject.this, ProjectsPage.class));
                     }

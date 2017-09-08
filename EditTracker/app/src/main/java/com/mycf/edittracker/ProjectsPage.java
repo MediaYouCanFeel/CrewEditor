@@ -1,26 +1,18 @@
 package com.mycf.edittracker;
 
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.support.v4.view.ScrollingView;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ProjectsPage extends AppCompatActivity {
 
@@ -53,7 +45,7 @@ public class ProjectsPage extends AppCompatActivity {
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp.setMargins(0,15,0,15);
 
-        Cursor res = myDb.getAllData();
+        Cursor res = myDb.getAllProjects();
         if (res.getCount() == 0) {
             // show message for no results
             //showMessage("Error", "No data found.");
