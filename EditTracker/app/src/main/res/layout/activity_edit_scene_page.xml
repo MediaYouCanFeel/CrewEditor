@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mycf.edittracker.NewScenePage">
+    tools:context="com.mycf.edittracker.EditScenePage">
 
     <TextView
         android:id="@+id/textView_proj_title"
@@ -24,7 +24,7 @@
         android:id="@+id/textView_add_new_scene"
         android:layout_width="wrap_content"
         android:layout_height="29dp"
-        android:text="ADD NEW SCENE"
+        android:text="EDIT SCENE INFO"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -114,7 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="32dp"
-        android:text="CREATE"
+        android:text="SAVE"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_new_scene_time" />
 

@@ -10,20 +10,20 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class NewScenePage extends AppCompatActivity {
+public class EditScenePage extends AppCompatActivity {
 
     DatabaseHelper myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_scene_page);
+        setContentView(R.layout.activity_edit_scene_page);
 
         myDb = new DatabaseHelper(this);
 
         TextView projectTitleTextView = (TextView) findViewById(R.id.textView_proj_title);
-        Button newSceneCreateButton = (Button) findViewById(R.id.edit_scene_create_button);
-        Button newSceneCancelButton = (Button) findViewById(R.id.edit_scene_cancel_button);
+        Button editSceneSaveButton = (Button) findViewById(R.id.edit_scene_create_button);
+        Button editSceneCancelButton = (Button) findViewById(R.id.edit_scene_cancel_button);
 
         final EditText newSceneNumber = (EditText) findViewById(R.id.editText_new_scene_number);
         final EditText newSceneLocation = (EditText) findViewById(R.id.editText_new_scene_location);
@@ -31,34 +31,41 @@ public class NewScenePage extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         final String projId = b.getString("projectId");
+        final String sceneId = b.getString("sceneId");
 
         String projectTitle = myDb.getProjectTitle(projId);
         projectTitleTextView.setText(projectTitle);
 
-        newSceneCancelButton.setOnClickListener(new View.OnClickListener() {
+        newSceneNumber.setText(myDb.getSceneNumber(sceneId));
+        newSceneLocation.setText(myDb.getSceneLocation(sceneId));
+        newSceneTime.setText(myDb.getSceneTime(sceneId));
+
+        editSceneCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, String> bundle = new HashMap<>();
                 bundle.put("projectId", projId);
-                CrewUtils.sendIntent(NewScenePage.this, ProjectPage.class, bundle);
+                bundle.put("sceneId", sceneId);
+                CrewUtils.sendIntent(EditScenePage.this, ScenePage.class, bundle);
             }
         });
 
-        newSceneCreateButton.setOnClickListener(new View.OnClickListener() {
+        editSceneSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isInserted = myDb.insertNewScene(projId,
+                boolean isInserted = myDb.updateScene(sceneId,
                         newSceneNumber.getText().toString(),
                         newSceneLocation.getText().toString(),
                         newSceneTime.getText().toString());
                 if(isInserted) {
-                    Toast.makeText(NewScenePage.this, "New scene added", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditScenePage.this, "Scene Updated", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(NewScenePage.this, "ERROR", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditScenePage.this, "ERROR", Toast.LENGTH_LONG).show();
                 }
                 HashMap<String, String> bundle = new HashMap<>();
                 bundle.put("projectId", projId);
-                CrewUtils.sendIntent(NewScenePage.this, ProjectPage.class, bundle);
+                bundle.put("sceneId", sceneId);
+                CrewUtils.sendIntent(EditScenePage.this, ScenePage.class, bundle);
             }
         });
 

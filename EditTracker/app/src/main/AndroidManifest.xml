@@ -21,7 +21,8 @@
         <activity android:name=".ProjectPage" />
         <activity android:name=".EditProjectPage" />
         <activity android:name=".NewScenePage" />
-        <activity android:name=".ScenePage"></activity>
+        <activity android:name=".ScenePage" />
+        <activity android:name=".EditScenePage"></activity>
     </application>
 
 </manifest>

@@ -41,4 +41,16 @@
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_scene_number" />
+
+    <ImageButton
+        android:id="@+id/imageButton_edit_scene"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:layout_alignTop="@+id/textView_scene_project_title"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        tools:layout_editor_absoluteY="0dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

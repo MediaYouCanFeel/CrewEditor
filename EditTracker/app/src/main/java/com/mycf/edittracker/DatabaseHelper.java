@@ -102,6 +102,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean updateScene(String sceneId, String number, String location, String time) {
+        number = number.trim();
+        location = location.trim();
+        time = time.trim();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_2_NAME + " SET "
+                + T2_COL_3 + "='" + number + "', "
+                + T2_COL_4 + "='" + location + "',"
+                + T2_COL_5 + "='" + time + "' WHERE " + T2_COL_1 + "=" + sceneId);
+        return true;
+    }
+
     public Cursor getScenesForProject(String projId) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + T2_COL_2 + "='" + projId + "'", null);
