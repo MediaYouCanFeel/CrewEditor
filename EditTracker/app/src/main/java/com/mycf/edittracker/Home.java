@@ -16,7 +16,38 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         myDb = new DatabaseHelper(this);
-        //myDb.onUpgrade(myDb.getWritableDatabase(),1,2);
+        myDb.onUpgrade(myDb.getWritableDatabase(),0,1);
+
+        //TEMPORARY FOR V1 - ADDING DEFAULT WORKFLOW
+        String workflowName = "DEFAULT";
+        String[] workflowSteps = {"Catalogued", "Timeline Edited", "Color Corrected", "Audio Mixed", "VFX Complete"};
+        myDb.insertNewWorkflow(workflowName, workflowSteps);
+
+        //Autoload Default Projects
+        myDb.insertNewProject("DISCONNECTED");
+        myDb.insertNewScene("1","1", "Computer Lab", "Night");
+        myDb.insertNewScene("1","2", "Computer Lab", "Morning");
+        myDb.insertNewScene("1","3", "Jack Office", "Morning");
+        myDb.insertNewScene("1","4", "Dorm Room", "Noon");
+        myDb.insertNewScene("1","5", "Computer Lab", "Evening");
+        myDb.insertNewScene("1","6", "Date", "Night");
+        myDb.insertNewScene("1","7", "Food Court", "Night");
+        myDb.insertNewScene("1","8", "Computer Lab", "Night");
+
+        myDb.insertNewProject("Second Time");
+        myDb.insertNewScene("2","0", "Flash", "Various");
+        myDb.insertNewScene("2","1", "Getting Ready", "Morning");
+        myDb.insertNewScene("2","2", "The Second Time", "Continuous");
+        myDb.insertNewScene("2","3", "Emmett Learns", "Afternoon");
+        myDb.insertNewScene("2","4", "3MA Benches", "Continuous");
+        myDb.insertNewScene("2","5", "Close Encounter", "Day");
+        myDb.insertNewScene("2","6", "3MA Benches", "Continuous");
+        myDb.insertNewScene("2","7", "How I Met My Ex", "Continuous");
+
+        for (int i = 1; i <= 16; i++) {
+            myDb.addWorkflowToScene("1", Integer.toString(i));
+        }
+
         Button myProjectsButton = (Button) findViewById(R.id.my_projects_button);
 
         myProjectsButton.setOnClickListener(new View.OnClickListener() {

@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class ScenePage extends AppCompatActivity {
 
@@ -44,6 +49,42 @@ public class ScenePage extends AppCompatActivity {
         locationTextView.setText(sceneLocation + " - " + sceneTime);
 
         ImageButton editSceneButton = (ImageButton) findViewById(R.id.imageButton_edit_scene);
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout_workflow);
+
+        final HashMap<String, String> workflowStatus = myDb.getWorkflow(sceneId);
+
+        Iterator it = workflowStatus.entrySet().iterator();
+        while (it.hasNext()) {
+            LinearLayout thisStep = new LinearLayout(this);
+            thisStep.setOrientation(LinearLayout.HORIZONTAL);
+            final Map.Entry pair = (Map.Entry) it.next();
+            TextView thisStepText = new TextView(this);
+            CheckBox statusCheck = new CheckBox(this);
+
+            statusCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                    if (isChecked) {
+                        workflowStatus.put(pair.getKey().toString(), "TRUE");
+                    } else {
+                        workflowStatus.put(pair.getKey().toString(), "FALSE");
+                    }
+                    myDb.updateSceneStatus(sceneId, workflowStatus);
+                }
+            });
+
+            if (pair.getValue().equals("TRUE")) {
+                statusCheck.setChecked(true);
+            } else {
+                statusCheck.setChecked(false);
+            }
+            thisStepText.setText(pair.getKey().toString());
+
+            thisStep.addView(statusCheck);
+            thisStep.addView(thisStepText);
+            linearLayout.addView(thisStep);
+        }
 
         editSceneButton.setOnClickListener(new View.OnClickListener() {
             @Override

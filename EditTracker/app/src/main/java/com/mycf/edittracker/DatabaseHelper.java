@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.HashMap;
+
 /**
  * Created by John on 8/25/2017.
  */
@@ -26,7 +28,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String T2_COL_4 = "Location";
     public static final String T2_COL_5 = "Time";
     public static final String T2_COL_6 = "Status";
+    public static final String T2_COL_7 = "Workflow_Id";
 
+    /* WORKFLOWS TABLE*/
+    public static final String TABLE_3_NAME = "workflows";
+    public static final String T3_COL_1 = "ID";
+    public static final String T3_COL_2 = "Name";
+    public static final String T3_COL_3 = "Steps";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -44,13 +52,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + T2_COL_3 + " TEXT,"
                 + T2_COL_4 + " TEXT,"
                 + T2_COL_5 + " TEXT,"
-                + T2_COL_6 + " TEXT)");
+                + T2_COL_6 + " TEXT,"
+                + T2_COL_7 + " TEXT)");
+
+        //Create Workflow table
+        db.execSQL("CREATE TABLE " + TABLE_3_NAME + " (" + T3_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + T3_COL_2 + " TEXT,"
+                + T3_COL_3 + " TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_1_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_2_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_3_NAME);
         onCreate(db);
     }
 
@@ -78,6 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void updateProjectTitle(String newTitle, String projId) {
+        newTitle = newTitle.trim();
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + TABLE_1_NAME + " SET " + T1_COL_2 + "='" + newTitle + "' WHERE " + T1_COL_1 + "=" + projId);
     }
@@ -114,6 +130,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean addWorkflowToScene(String workflowId, String sceneId) {
+        sceneId = sceneId.trim();
+        workflowId = workflowId.trim();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_2_NAME + " SET "
+                + T2_COL_7 + "='" + workflowId + "' WHERE " + T2_COL_1 + "=" + sceneId);
+        String[] steps = getWorkflowSteps(workflowId);
+        int numOfSteps = steps.length;
+        String[] initStatus = new String[numOfSteps];
+        for (int i = 0; i < numOfSteps; i++) {
+            initStatus[i] = "FALSE";
+        }
+        String initStatusStr = convertArrayToString(initStatus);
+        updateSceneStatus(sceneId, initStatusStr);
+        return true;
+    }
+
+    public boolean updateSceneStatus(String sceneId, String status) {
+        status = status.trim();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_2_NAME + " SET "
+                + T2_COL_6 + "='" + status + "' WHERE " + T2_COL_1 + "=" + sceneId);
+        return true;
+    }
+
+    public boolean updateSceneStatus(String sceneId, HashMap<String, String> workflowStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_7 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        String workflowId = res.getString(0);
+
+        res = db.rawQuery("SELECT " + T3_COL_3 + " FROM " + TABLE_3_NAME + " WHERE " + T3_COL_1 + "=" + workflowId, null);
+        res.moveToFirst();
+        String workflowStepsStr = res.getString(0);
+        String[] workflowSteps = convertStringToArray(workflowStepsStr);
+
+        String[] statusArr = new String[workflowSteps.length];
+        for (int i = 0; i < workflowSteps.length; i++) {
+            statusArr[i] = workflowStatus.get(workflowSteps[i]);
+        }
+
+        String newStatusStr = convertArrayToString(statusArr);
+
+        db.execSQL("UPDATE " + TABLE_2_NAME + " SET "
+                + T2_COL_6 + "='" + newStatusStr + "' WHERE " + T2_COL_1 + "=" + sceneId);
+
+        return true;
+    }
+
     public Cursor getScenesForProject(String projId) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + T2_COL_2 + "='" + projId + "'", null);
@@ -139,5 +204,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor res = db.rawQuery("SELECT " + T2_COL_5 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
         res.moveToFirst();
         return res.getString(0);
+    }
+
+    public HashMap<String, String> getWorkflow(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_7 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        String workflowId = res.getString(0);
+        res = db.rawQuery("SELECT " + T3_COL_3 + " FROM " + TABLE_3_NAME + " WHERE " + T3_COL_1 + "=" + workflowId, null);
+        res.moveToFirst();
+        String[] workflowSteps = convertStringToArray(res.getString(0));
+
+        res = db.rawQuery("SELECT " + T2_COL_6 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        String[] statusArr = convertStringToArray(res.getString(0));
+
+        HashMap<String, String> workflowStatus = new HashMap<>();
+        for (int i = 0; i < workflowSteps.length; i++) {
+            workflowStatus.put(workflowSteps[i], statusArr[i]);
+        }
+
+        return workflowStatus;
+    }
+
+    ///////////////////
+    //   WORKFLOWS   //
+    ///////////////////
+    public static String strSeparator = "__,__";
+
+    public boolean insertNewWorkflow(String name, String[] steps) {
+        name = name.trim();
+        String stepsArr = convertArrayToString(steps);
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO " + TABLE_3_NAME + " ("
+                + T3_COL_2 + "," + T3_COL_3 + ") VALUES ('"
+                + name + "','" + stepsArr + "');");
+        return true;
+    }
+
+    public String[] getWorkflowSteps(String workflowId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT Steps FROM " + TABLE_3_NAME + " WHERE " + T3_COL_1 + "=" + workflowId + "", null);
+        res.moveToFirst();
+        String stepsStr = res.getString(0);
+        return convertStringToArray(stepsStr);
+    }
+
+    public static String convertArrayToString(String[] array) {
+        String str = "";
+        for (int i = 0; i < array.length; i++) {
+            str = str + array[i];
+            if( i < (array.length - 1)) {
+                str = str + strSeparator;
+            }
+        }
+        return str;
+    }
+
+    public static String[] convertStringToArray(String str){
+        String[] arr = str.split(strSeparator);
+        return arr;
     }
 }
