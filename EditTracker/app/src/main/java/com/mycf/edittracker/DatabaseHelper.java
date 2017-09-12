@@ -36,6 +36,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String T3_COL_2 = "Name";
     public static final String T3_COL_3 = "Steps";
 
+    /* WORKFLOW STEPS */
+    public static final String TABLE_4_NAME = "workflow_steps";
+    public static final String T4_COL_1 = "ID";
+    public static final String T4_COL_2 = "Name";
+    public static final String T4_COL_3 = "Abbreviation";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
     }
@@ -59,6 +65,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_3_NAME + " (" + T3_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + T3_COL_2 + " TEXT,"
                 + T3_COL_3 + " TEXT)");
+
+        //Create Workflow Steps table
+        db.execSQL("CREATE TABLE " + TABLE_4_NAME + " (" + T4_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + T4_COL_2 + " TEXT,"
+                + T4_COL_3 + " TEXT)");
     }
 
     @Override
@@ -66,6 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_1_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_2_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_3_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_4_NAME);
         onCreate(db);
     }
 
@@ -227,6 +239,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return workflowStatus;
     }
 
+    public String getWorkflowId(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_7 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        return res.getString(0);
+    }
+
+    public String[] getStatus(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_6 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        String statusStr = res.getString(0);
+        return convertStringToArray(statusStr);
+    }
+
+    /**
+     * Method to calculate and return the percentage complete of a scene.
+     *
+     * @param sceneId The ID of the scene
+     * @return percentage complete of the scene (as an int)
+     */
+    public int getPercentageCompleteScene(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_6 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
+        res.moveToFirst();
+        String statusStr = res.getString(0);
+        String[] statusArr = convertStringToArray(statusStr);
+        int completeSteps = 0;
+        int totalSteps = 0;
+        for (int i = 0; i < statusArr.length; i++) {
+            totalSteps++;
+            if (statusArr[i].equals("TRUE")) {
+                completeSteps++;
+            }
+        }
+
+        return ((completeSteps * 100)/totalSteps);
+    }
+
     ///////////////////
     //   WORKFLOWS   //
     ///////////////////
@@ -265,4 +316,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String[] arr = str.split(strSeparator);
         return arr;
     }
+
+    ////////////////////////
+    //   WORKFLOW STEPS   //
+    ////////////////////////
+    public boolean insertNewWorkflowStep(String name, String abbreviation) {
+        name = name.trim();
+        abbreviation = abbreviation.trim();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("INSERT INTO " + TABLE_4_NAME + " ("
+                + T4_COL_2 + "," + T4_COL_3 + ") VALUES ('"
+                + name + "','" + abbreviation + "');");
+        return true;
+    }
+
+    public String getWorkflowStepName(String workflowStepId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T4_COL_2 + " FROM " + TABLE_4_NAME + " WHERE " + T4_COL_1 + "=" + workflowStepId, null);
+        res.moveToFirst();
+        return res.getString(0);
+    }
+
+    public String getWorkflowStepAbbr(String workflowStepId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T4_COL_3 + " FROM " + TABLE_4_NAME + " WHERE " + T4_COL_1 + "=" + workflowStepId, null);
+        res.moveToFirst();
+        return res.getString(0);
+    }
+
 }

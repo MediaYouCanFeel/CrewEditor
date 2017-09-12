@@ -52,6 +52,8 @@ public class ScenePage extends AppCompatActivity {
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout_workflow);
 
+        final TextView percentageCompleteTextView = (TextView) findViewById(R.id.textView_percentage_complete);
+
         final HashMap<String, String> workflowStatus = myDb.getWorkflow(sceneId);
 
         Iterator it = workflowStatus.entrySet().iterator();
@@ -71,6 +73,7 @@ public class ScenePage extends AppCompatActivity {
                         workflowStatus.put(pair.getKey().toString(), "FALSE");
                     }
                     myDb.updateSceneStatus(sceneId, workflowStatus);
+                    percentageCompleteTextView.setText(Integer.toString(myDb.getPercentageCompleteScene(sceneId)) + "% Complete");
                 }
             });
 
@@ -79,7 +82,10 @@ public class ScenePage extends AppCompatActivity {
             } else {
                 statusCheck.setChecked(false);
             }
-            thisStepText.setText(pair.getKey().toString());
+            String workflowStepId = pair.getKey().toString();
+            thisStepText.setText(myDb.getWorkflowStepName(workflowStepId));
+
+            percentageCompleteTextView.setText(Integer.toString(myDb.getPercentageCompleteScene(sceneId)) + "% Complete");
 
             thisStep.addView(statusCheck);
             thisStep.addView(thisStepText);

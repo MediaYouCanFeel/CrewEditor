@@ -1,6 +1,9 @@
 package com.mycf.edittracker;
 
-import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.test.AndroidTestCase;
+
+import com.mycf.edittracker.DatabaseHelper;
 
 import org.junit.Test;
 
@@ -9,15 +12,29 @@ import static org.junit.Assert.*;
 /**
  * Created by John on 9/9/2017.
  */
-public class DatabaseHelperTest {
+public class DatabaseHelperTest extends AndroidTestCase {
+
+    private DatabaseHelper myDb;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        myDb =  new DatabaseHelper(InstrumentationRegistry.getTargetContext());
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+
 
     @Test
-    public void insertNewProject() throws Exception {
-//        DatabaseHelper myDb = new DatabaseHelper(this);
-//        String title="Test Project";
-//        DatabaseHelper.insertNewProject(title);
-//        String outputTitle = DatabaseHelper.getProjectTitle("1");
-//        assertEquals(title, outputTitle);
+    public void testInsertNewProject() throws Exception {
+        String title="Test Project";
+        myDb.insertNewProject(title);
+        String outputTitle = myDb.getProjectTitle("1");
+        assertEquals(title, outputTitle);
     }
 
     @Test
@@ -57,6 +74,11 @@ public class DatabaseHelperTest {
 
     @Test
     public void updateSceneStatus() throws Exception {
+
+    }
+
+    @Test
+    public void updateSceneStatus1() throws Exception {
 
     }
 

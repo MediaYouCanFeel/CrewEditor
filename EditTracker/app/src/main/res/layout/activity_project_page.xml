@@ -19,11 +19,11 @@
         android:layout_alignParentTop="true"
         android:textSize="28sp"/>
 
-    <ImageButton
-        android:id="@+id/imageButton_edit_project"
+    <Button
+        android:id="@+id/button_edit_project"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_edit"
+        android:text="EDIT"
         android:layout_alignTop="@+id/textView_project_title"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

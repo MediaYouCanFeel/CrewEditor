@@ -18,9 +18,16 @@ public class Home extends AppCompatActivity {
         myDb = new DatabaseHelper(this);
         myDb.onUpgrade(myDb.getWritableDatabase(),0,1);
 
+        //Creating Workflow Steps
+        myDb.insertNewWorkflowStep("Catalogued", "CAT");
+        myDb.insertNewWorkflowStep("Timeline Edited", "TE");
+        myDb.insertNewWorkflowStep("Color Corrected", "CC");
+        myDb.insertNewWorkflowStep("Audio Mixed", "AM");
+        myDb.insertNewWorkflowStep("VFX Complete", "VFX");
+
         //TEMPORARY FOR V1 - ADDING DEFAULT WORKFLOW
         String workflowName = "DEFAULT";
-        String[] workflowSteps = {"Catalogued", "Timeline Edited", "Color Corrected", "Audio Mixed", "VFX Complete"};
+        String[] workflowSteps = {"1", "2", "3", "4", "5"};
         myDb.insertNewWorkflow(workflowName, workflowSteps);
 
         //Autoload Default Projects
