@@ -2,10 +2,13 @@ package com.mycf.edittracker;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.HashMap;
+
+import static java.lang.Math.toIntExact;
 
 /**
  * Created by John on 8/25/2017.
@@ -113,6 +116,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteProject(String projId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_1_NAME + " WHERE " + T1_COL_1 + "=" + projId);
+    }
+
+    public int getNumberOfScenes(String projId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long numberOfScenes = DatabaseUtils.queryNumEntries(db, TABLE_2_NAME, T2_COL_2 + "=" + projId);
+        return toIntExact(numberOfScenes);
+    }
+
+    public int getProjectPercentComplete(String projId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T2_COL_6 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_2 + "=" + projId, null);
+
+        int totalSteps = 0;
+        int passedSteps = 0;
+        while (res.moveToNext()) {
+            String statusStr = res.getString(0);
+            String[] statusArr = convertStringToArray(statusStr);
+            for (int i = 0; i < statusArr.length; i++) {
+                totalSteps++;
+                if (statusArr[i].equals("TRUE")) {
+                    passedSteps++;
+                }
+            }
+        }
+        int percentComplete = (passedSteps * 100)/totalSteps;
+        return percentComplete;
     }
 
     ////////////////

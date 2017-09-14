@@ -10,7 +10,7 @@ public class Home extends AppCompatActivity {
 
     DatabaseHelper myDb;
 
-    private static final String BUILD_TYPE = "DEMO";
+    private static final String BUILD_TYPE = "NORMAL";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,8 @@ public class Home extends AppCompatActivity {
             case "CLEAN":
                 resetDatabase();
                 setupDefaultWorkflow();
+                break;
+            case "NORMAL":
                 break;
             default:
                 break;
@@ -67,8 +69,8 @@ public class Home extends AppCompatActivity {
         myDb.insertNewScene("2","3", "Emmett Learns", "Afternoon");
         myDb.insertNewScene("2","4", "3MA Benches", "Continuous");
         myDb.insertNewScene("2","5", "Close Encounter", "Day");
-        myDb.insertNewScene("2","6", "3MA Benches", "Continuous");
-        myDb.insertNewScene("2","7", "How I Met My Ex", "Continuous");
+//        myDb.insertNewScene("2","6", "3MA Benches", "Continuous");
+//        myDb.insertNewScene("2","7", "How I Met My Ex", "Continuous");
 
 //        for (int i = 1; i <= 16; i++) {
 //            myDb.addWorkflowToScene("1", Integer.toString(i));
