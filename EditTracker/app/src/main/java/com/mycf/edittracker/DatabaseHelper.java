@@ -127,6 +127,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + T2_COL_2 + "," + T2_COL_3 + "," + T2_COL_4 + "," + T2_COL_5 + ") VALUES ("
                 + projId + ",'" + number + "','" + location + "','" + time
                 + "');");
+        Cursor sceneIdCursor = db.rawQuery("SELECT ID FROM " + TABLE_2_NAME + " WHERE " + T2_COL_3 + " ='" + number + "' AND " + T2_COL_4 + " ='" + location + "'", null);
+        sceneIdCursor.moveToFirst();
+        String sceneId = sceneIdCursor.getString(0);
+        addWorkflowToScene("1", sceneId);
         return true;
     }
 

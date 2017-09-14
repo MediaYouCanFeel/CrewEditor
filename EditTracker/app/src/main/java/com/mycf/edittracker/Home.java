@@ -15,6 +15,20 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Button myProjectsButton = (Button) findViewById(R.id.my_projects_button);
+
+        //demoSetup();
+
+        myProjectsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Home.this, ProjectsPage.class));
+            }
+        });
+
+    }
+
+    private void demoSetup() {
         myDb = new DatabaseHelper(this);
         myDb.onUpgrade(myDb.getWritableDatabase(),0,1);
 
@@ -54,17 +68,5 @@ public class Home extends AppCompatActivity {
         for (int i = 1; i <= 16; i++) {
             myDb.addWorkflowToScene("1", Integer.toString(i));
         }
-
-        Button myProjectsButton = (Button) findViewById(R.id.my_projects_button);
-
-        myProjectsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Home.this, ProjectsPage.class));
-            }
-        });
-
-
-
     }
 }
