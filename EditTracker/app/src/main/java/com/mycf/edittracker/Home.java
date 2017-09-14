@@ -10,6 +10,8 @@ public class Home extends AppCompatActivity {
 
     DatabaseHelper myDb;
 
+    private static final String BUILD_TYPE = "DEMO";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,7 +19,21 @@ public class Home extends AppCompatActivity {
 
         Button myProjectsButton = (Button) findViewById(R.id.my_projects_button);
 
-        //demoSetup();
+        myDb = new DatabaseHelper(this);
+
+        switch (BUILD_TYPE) {
+            case "DEMO":
+                resetDatabase();
+                setupDefaultWorkflow();
+                demoSetup();
+                break;
+            case "CLEAN":
+                resetDatabase();
+                setupDefaultWorkflow();
+                break;
+            default:
+                break;
+        }
 
         myProjectsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,22 +44,11 @@ public class Home extends AppCompatActivity {
 
     }
 
-    private void demoSetup() {
-        myDb = new DatabaseHelper(this);
+    private void resetDatabase() {
         myDb.onUpgrade(myDb.getWritableDatabase(),0,1);
+    }
 
-        //Creating Workflow Steps
-        myDb.insertNewWorkflowStep("Catalogued", "CAT");
-        myDb.insertNewWorkflowStep("Timeline Edited", "TE");
-        myDb.insertNewWorkflowStep("Color Corrected", "CC");
-        myDb.insertNewWorkflowStep("Audio Mixed", "AM");
-        myDb.insertNewWorkflowStep("VFX Complete", "VFX");
-
-        //TEMPORARY FOR V1 - ADDING DEFAULT WORKFLOW
-        String workflowName = "DEFAULT";
-        String[] workflowSteps = {"1", "2", "3", "4", "5"};
-        myDb.insertNewWorkflow(workflowName, workflowSteps);
-
+    private void demoSetup() {
         //Autoload Default Projects
         myDb.insertNewProject("DISCONNECTED");
         myDb.insertNewScene("1","1", "Computer Lab", "Night");
@@ -65,8 +70,22 @@ public class Home extends AppCompatActivity {
         myDb.insertNewScene("2","6", "3MA Benches", "Continuous");
         myDb.insertNewScene("2","7", "How I Met My Ex", "Continuous");
 
-        for (int i = 1; i <= 16; i++) {
-            myDb.addWorkflowToScene("1", Integer.toString(i));
-        }
+//        for (int i = 1; i <= 16; i++) {
+//            myDb.addWorkflowToScene("1", Integer.toString(i));
+//        }
+    }
+
+    private void setupDefaultWorkflow() {
+        //Creating Workflow Steps
+        myDb.insertNewWorkflowStep("Catalogued", "CAT");
+        myDb.insertNewWorkflowStep("Timeline Edited", "TE");
+        myDb.insertNewWorkflowStep("Color Corrected", "CC");
+        myDb.insertNewWorkflowStep("Audio Mixed", "AM");
+        myDb.insertNewWorkflowStep("VFX Complete", "VFX");
+
+        //TEMPORARY FOR V1 - ADDING DEFAULT WORKFLOW
+        String workflowName = "DEFAULT";
+        String[] workflowSteps = {"1", "2", "3", "4", "5"};
+        myDb.insertNewWorkflow(workflowName, workflowSteps);
     }
 }
