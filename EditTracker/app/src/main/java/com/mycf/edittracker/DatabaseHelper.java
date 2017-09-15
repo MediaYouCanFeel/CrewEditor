@@ -73,6 +73,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_4_NAME + " (" + T4_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + T4_COL_2 + " TEXT,"
                 + T4_COL_3 + " TEXT)");
+
+        setupDefaultWorkflow();
     }
 
     @Override
@@ -353,6 +355,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static String[] convertStringToArray(String str){
         String[] arr = str.split(strSeparator);
         return arr;
+    }
+
+    protected void setupDefaultWorkflow() {
+        //Creating Workflow Steps
+        insertNewWorkflowStep("Catalogued", "CAT");
+        insertNewWorkflowStep("Timeline Edited", "TE");
+        insertNewWorkflowStep("Color Corrected", "CC");
+        insertNewWorkflowStep("Audio Mixed", "AM");
+        insertNewWorkflowStep("VFX Complete", "VFX");
+
+        //TEMPORARY FOR V1 - ADDING DEFAULT WORKFLOW
+        String workflowName = "DEFAULT";
+        String[] workflowSteps = {"1", "2", "3", "4", "5"};
+        insertNewWorkflow(workflowName, workflowSteps);
     }
 
     ////////////////////////

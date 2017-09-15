@@ -16,7 +16,7 @@ public class Home extends AppCompatActivity {
     DatabaseHelper myDb;
 
     private static final String BUILD_TYPE = "NORMAL";
-    private static final String VERSION_NAME = "a0.1.2";
+    private static final String VERSION_NAME = "a0.1.3";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +35,12 @@ public class Home extends AppCompatActivity {
         switch (BUILD_TYPE) {
             case "DEMO":
                 resetDatabase();
-                setupDefaultWorkflow();
+                myDb.setupDefaultWorkflow();
                 demoSetup();
                 break;
             case "CLEAN":
                 resetDatabase();
-                setupDefaultWorkflow();
+                myDb.setupDefaultWorkflow();
                 break;
             case "NORMAL":
                 break;
@@ -93,19 +93,5 @@ public class Home extends AppCompatActivity {
 //        for (int i = 1; i <= 16; i++) {
 //            myDb.addWorkflowToScene("1", Integer.toString(i));
 //        }
-    }
-
-    private void setupDefaultWorkflow() {
-        //Creating Workflow Steps
-        myDb.insertNewWorkflowStep("Catalogued", "CAT");
-        myDb.insertNewWorkflowStep("Timeline Edited", "TE");
-        myDb.insertNewWorkflowStep("Color Corrected", "CC");
-        myDb.insertNewWorkflowStep("Audio Mixed", "AM");
-        myDb.insertNewWorkflowStep("VFX Complete", "VFX");
-
-        //TEMPORARY FOR V1 - ADDING DEFAULT WORKFLOW
-        String workflowName = "DEFAULT";
-        String[] workflowSteps = {"1", "2", "3", "4", "5"};
-        myDb.insertNewWorkflow(workflowName, workflowSteps);
     }
 }
