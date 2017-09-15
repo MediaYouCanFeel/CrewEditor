@@ -175,4 +175,9 @@ public class ProjectsPage extends AppCompatActivity {
         projTitleTextView.setGravity(Gravity.CENTER_HORIZONTAL);
         return projTitleTextView;
     }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(ProjectsPage.this, Home.class));
+    }
 }

@@ -3,14 +3,20 @@ package com.mycf.edittracker;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class Home extends AppCompatActivity {
 
     DatabaseHelper myDb;
 
     private static final String BUILD_TYPE = "NORMAL";
+    private static final String VERSION_NAME = "a0.1.2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +24,11 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         Button myProjectsButton = (Button) findViewById(R.id.my_projects_button);
+        Button settingsButton = (Button) findViewById(R.id.button_settings);
+
+        TextView footer = (TextView) findViewById(R.id.textView_MYCF);
+        footer.setText("Media You Can Feel, LLC \nAlpha Build: " + VERSION_NAME);
+        footer.setGravity(Gravity.CENTER);
 
         myDb = new DatabaseHelper(this);
 
@@ -41,6 +52,13 @@ public class Home extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Home.this, ProjectsPage.class));
+            }
+        });
+
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Home.this, Settings.class));
             }
         });
 

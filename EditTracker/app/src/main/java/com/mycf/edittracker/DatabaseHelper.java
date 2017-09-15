@@ -140,6 +140,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
         }
+        if (totalSteps == 0) {
+            return 0;
+        }
         int percentComplete = (passedSteps * 100)/totalSteps;
         return percentComplete;
     }
