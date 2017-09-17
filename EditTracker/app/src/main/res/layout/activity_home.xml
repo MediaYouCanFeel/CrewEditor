@@ -48,13 +48,13 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="226dp"
-        android:layout_height="145dp"
+        android:layout_width="185dp"
+        android:layout_height="157dp"
         android:cropToPadding="true"
-        android:background="@drawable/crew_editor_logo_black"
+        android:background="@drawable/ic_logo2"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
