@@ -112,12 +112,14 @@ public class ProjectsPage extends AppCompatActivity {
         LinearLayout releaseLinearLayout = new LinearLayout(this);
         releaseLinearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        if (false) {  //TODO change from "if (false)" to "if (hasAReleaseDate)"
-            releaseLinearLayout.addView(createNewLowerInfoTextView("17 days", true));
-            releaseLinearLayout.addView(createNewLowerInfoTextView("remaining", false));
-        } else {
-            releaseLinearLayout.addView(createNewLowerInfoTextView("No release date.", true));
+        String releaseDate = myDb.getProjectReleaseDate(id);
+
+        if (!releaseDate.equals("No release date.")) {
+          releaseLinearLayout.addView(createNewLowerInfoTextView("Release Date", false));
         }
+
+        releaseLinearLayout.addView(createNewLowerInfoTextView(releaseDate, true));
+
         releaseLinearLayout.setBackground(getResources().getDrawable(R.drawable.border));
 
         //Create full lower info LinearLayout

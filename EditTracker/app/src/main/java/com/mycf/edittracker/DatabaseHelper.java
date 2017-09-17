@@ -22,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_1_NAME = "projects";
     public static final String T1_COL_1 = "ID";
     public static final String T1_COL_2 = "Title";
+    public static final String T1_COL_3 = "Release_Date";
 
     /* SCENES TABLE */
     public static final String TABLE_2_NAME = "scenes";
@@ -53,7 +54,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //Create Projects table
         db.execSQL("CREATE TABLE " + TABLE_1_NAME + " (" + T1_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + T1_COL_2 + " TEXT)");
+                + T1_COL_2 + " TEXT,"
+                + T1_COL_3 + " TEXT)");
 
         //Create Scenes table
         db.execSQL("CREATE TABLE " + TABLE_2_NAME + " (" + T2_COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -96,6 +98,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean insertNewProject(String title, String releaseDate) {
+        title = title.trim();
+        releaseDate = releaseDate.trim();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db. execSQL("INSERT INTO " + TABLE_1_NAME + " (" + T1_COL_2 + "," + T1_COL_3 + ") VALUES ('" + title + "','" + releaseDate + "');");
+        return true;
+    }
+
     public Cursor getAllProjects() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM " + TABLE_1_NAME, null);
@@ -109,10 +119,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res.getString(0);
     }
 
+    public String getProjectReleaseDate(String projId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT " + T1_COL_3 + " FROM " + TABLE_1_NAME + " WHERE " + T1_COL_1 + "=" + projId, null);
+        res.moveToFirst();
+        String releaseDate = res.getString(0);
+        if (releaseDate == null || releaseDate.isEmpty()) {
+            return "No release date.";
+        } else {
+            return releaseDate;
+        }
+    }
+
     public void updateProjectTitle(String newTitle, String projId) {
         newTitle = newTitle.trim();
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("UPDATE " + TABLE_1_NAME + " SET " + T1_COL_2 + "='" + newTitle + "' WHERE " + T1_COL_1 + "=" + projId);
+    }
+
+    public void updateProjectReleaseDate(String newReleaseDate, String projId) {
+        newReleaseDate = newReleaseDate.trim();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("UPDATE " + TABLE_1_NAME + " SET " + T1_COL_3 + "='" + newReleaseDate + "' WHERE " + T1_COL_1 + "=" + projId);
     }
 
     public void deleteProject(String projId) {

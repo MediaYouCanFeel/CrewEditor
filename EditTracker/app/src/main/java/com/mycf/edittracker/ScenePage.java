@@ -62,7 +62,7 @@ public class ScenePage extends AppCompatActivity {
             thisStep.setOrientation(LinearLayout.HORIZONTAL);
             final Map.Entry pair = (Map.Entry) it.next();
             TextView thisStepText = new TextView(this);
-            CheckBox statusCheck = new CheckBox(this);
+            final CheckBox statusCheck = new CheckBox(this);
 
             statusCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -74,6 +74,17 @@ public class ScenePage extends AppCompatActivity {
                     }
                     myDb.updateSceneStatus(sceneId, workflowStatus);
                     percentageCompleteTextView.setText(Integer.toString(myDb.getPercentageCompleteScene(sceneId)) + "% Complete");
+                }
+            });
+
+            thisStepText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (statusCheck.isChecked()) {
+                        statusCheck.setChecked(false);
+                    } else {
+                        statusCheck.setChecked(true);
+                    }
                 }
             });
 
