@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.HashMap;
 
 public class ProjectPage extends AppCompatActivity {
@@ -41,6 +40,17 @@ public class ProjectPage extends AppCompatActivity {
         editProjectButton.setTypeface(FontManager.getTypeface(this, FontManager.FONTAWESOME));
         editProjectButton.setText(getResources().getString(R.string.fa_icon_pencil));
         editProjectButton.setAutoSizeTextTypeWithDefaults(Button.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+
+        TextView releaseDateTextView = (TextView) findViewById(R.id.textView_release_date);
+        String releaseDate = myDb.getProjectReleaseDate(projId);
+        String releaseDateText;
+        if (releaseDate.equals("No release date.")) {
+            releaseDateText = "No release date";
+        } else {
+            releaseDateText = "Release Date: " + releaseDate;
+        }
+
+        releaseDateTextView.setText(releaseDateText);
 
         Button addSceneButton = (Button) findViewById(R.id.button_add_scene);
 
