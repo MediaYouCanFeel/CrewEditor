@@ -7,13 +7,18 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 
 public class ProjectPage extends AppCompatActivity {
@@ -81,8 +86,6 @@ public class ProjectPage extends AppCompatActivity {
         LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         llp.setMargins(0,15,0,15);
 
-
-
         Cursor res = myDb.getScenesForProject(projId);
         if (res.getCount() == 0) {
             // show message for no results
@@ -95,54 +98,97 @@ public class ProjectPage extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
         while (res.moveToNext()) { //FOR EACH SCENE
-            LinearLayout fullSceneLinLay = new LinearLayout(this);
-            fullSceneLinLay.setOrientation(LinearLayout.VERTICAL);
-            RelativeLayout sceneInfoRelLay = new RelativeLayout(this);
 
-            LinearLayout workflowStepsLinLay = new LinearLayout(this);
-            workflowStepsLinLay.setOrientation(LinearLayout.HORIZONTAL);
-
+            //Scene Info
             final String sceneId = res.getString(0);
             final String sceneNumber = res.getString(2);
             final String sceneLocation = res.getString(3);
             final String sceneTime = res.getString(4);
-            TextView numberTextView = new TextView(this);
-            TextView locationTextView = new TextView(this);
-            TextView timeTextView = new TextView(this);
 
-            numberTextView.setText(sceneNumber);
-            numberTextView.setTextSize(20);
-            numberTextView.setTextColor(Color.parseColor("#000000"));
+            //Params
+            LinearLayout.LayoutParams fill_parent_width_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            fill_parent_width_params.weight = 1.0f;
+            fill_parent_width_params.gravity = Gravity.CENTER;
 
-            locationTextView.setText(sceneLocation);
-            locationTextView.setTextSize(20);
-            locationTextView.setTypeface(null, Typeface.BOLD);
-            locationTextView.setTextColor(Color.parseColor("#000000"));
+            LinearLayout.LayoutParams fill_parent_height_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
+            fill_parent_width_params.weight = 1.0f;
+            fill_parent_width_params.gravity = Gravity.CENTER;
 
-            timeTextView.setText(sceneTime);
-            timeTextView.setTextSize(20);
-            timeTextView.setTextColor(Color.parseColor("#000000"));
+            //full layout
+            LinearLayout fullSceneLinLay = new LinearLayout(this);
+            fullSceneLinLay.setOrientation(LinearLayout.HORIZONTAL);
+            fullSceneLinLay.setLayoutParams(fill_parent_width_params);
 
-            sceneInfoRelLay.setBackground(getResources().getDrawable(R.drawable.border));
-            sceneInfoRelLay.setPadding(10,10,10,10);
-            sceneInfoRelLay.setLayoutParams(llp);
+            //Scene Number
+            TextView sceneNumberTextView = new TextView(this);
+            sceneNumberTextView.setText(sceneNumber);
+            sceneNumberTextView.setGravity(Gravity.CENTER_VERTICAL);
+            sceneNumberTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
+            sceneNumberTextView.setTextColor(Color.BLACK);
+            sceneNumberTextView.setPadding(30,0,30,0);
 
-            RelativeLayout.LayoutParams numLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            numLP.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            //Non-number info
+            LinearLayout nonNumberLinearLayout = new LinearLayout(this);
+            nonNumberLinearLayout.setOrientation(LinearLayout.VERTICAL);
+            nonNumberLinearLayout.setLayoutParams(fill_parent_width_params);
 
-            RelativeLayout.LayoutParams locLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            locLP.addRule(RelativeLayout.CENTER_IN_PARENT);
+            //Scene Location and Time
+            TextView sceneLocationTimeTextView = new TextView(this);
+            sceneLocationTimeTextView.setText(sceneLocation + " - " + sceneTime);
+            sceneLocationTimeTextView.setBackground(getResources().getDrawable(R.drawable.border));
+            sceneLocationTimeTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,18);
+            sceneLocationTimeTextView.setTextColor(Color.BLACK);
+            sceneLocationTimeTextView.setGravity(Gravity.CENTER);
+            sceneLocationTimeTextView.setPadding(0,10,0,10);
 
-            RelativeLayout.LayoutParams timeLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            timeLP.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            //Workflow Progress
+            LinearLayout workflowLinLay = new LinearLayout(this);
+            workflowLinLay.setOrientation(LinearLayout.HORIZONTAL);
 
-            numberTextView.setLayoutParams(numLP);
-            locationTextView.setLayoutParams(locLP);
-            timeTextView.setLayoutParams(timeLP);
+            //Workflow Steps
+            LinearLayout workflowStepsLinLay = new LinearLayout(this);
+            workflowStepsLinLay.setOrientation(LinearLayout.HORIZONTAL);
 
-            sceneInfoRelLay.addView(numberTextView);
-            sceneInfoRelLay.addView(locationTextView);
-            sceneInfoRelLay.addView(timeTextView);
+            String workflowId = myDb.getWorkflowId(sceneId);
+            String[] workflowStepIds = myDb.getWorkflowSteps(workflowId);
+            String[] status = myDb.getStatus(sceneId);
+
+            for (int i = 0; i < workflowStepIds.length; i++) {
+                TextView workflowStepTextView = new TextView(this);
+                workflowStepTextView.setText(myDb.getWorkflowStepAbbr(workflowStepIds[i]));
+                workflowStepTextView.setPadding(10, 0, 10, 0);
+                workflowStepTextView.setBackground(getResources().getDrawable(R.drawable.border));
+                workflowStepTextView.setGravity(Gravity.CENTER);
+                if (status[i].equals("TRUE")) {
+                    workflowStepTextView.setBackgroundColor(Color.BLUE);
+                }
+                workflowStepsLinLay.addView(workflowStepTextView);
+            }
+            workflowStepsLinLay.setLayoutParams(fill_parent_height_params);
+
+            //Workflow Percentage Complete
+            LinearLayout percentageCompleteLinLay = new LinearLayout(this);
+            percentageCompleteLinLay.setOrientation(LinearLayout.VERTICAL);
+
+            TextView percentageCompletePercentage = new TextView(this);
+            percentageCompletePercentage.setText(Integer.toString(myDb.getPercentageCompleteScene(sceneId) )+ "%");
+
+            TextView percentageCompleteText = new TextView(this);
+            percentageCompleteText.setText("complete");
+
+            percentageCompleteLinLay.addView(percentageCompletePercentage);
+            percentageCompleteLinLay.addView(percentageCompleteText);
+
+            workflowLinLay.addView(workflowStepsLinLay);
+            workflowLinLay.addView(percentageCompleteLinLay);
+            workflowLinLay.setBackground(getResources().getDrawable(R.drawable.border));
+
+            nonNumberLinearLayout.addView(sceneLocationTimeTextView);
+            nonNumberLinearLayout.addView(workflowLinLay);
+
+            fullSceneLinLay.addView(sceneNumberTextView);
+            fullSceneLinLay.addView(nonNumberLinearLayout);
+            fullSceneLinLay.setGravity(Gravity.CENTER_VERTICAL);
 
             fullSceneLinLay.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -154,32 +200,7 @@ public class ProjectPage extends AppCompatActivity {
                 }
             });
 
-            String workflowId = myDb.getWorkflowId(sceneId);
-            String[] workflowStepIds = myDb.getWorkflowSteps(workflowId);
-            String[] status = myDb.getStatus(sceneId);
-
-            for (int i = 0; i < workflowStepIds.length; i++) {
-                TextView workflowStepTextView = new TextView(this);
-                workflowStepTextView.setText(myDb.getWorkflowStepAbbr(workflowStepIds[i]));
-                workflowStepTextView.setPadding(10, 0, 10, 0);
-                workflowStepTextView.setBackground(getResources().getDrawable(R.drawable.border));
-                if (status[i].equals("TRUE")) {
-                    workflowStepTextView.setBackgroundColor(Color.BLUE);
-                }
-                workflowStepsLinLay.addView(workflowStepTextView);
-            }
-
-            workflowStepsLinLay.setPadding(0,0,0,0);
-            workflowStepsLinLay.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            workflowStepsLinLay.setBackground(getResources().getDrawable(R.drawable.border));
-
-            TextView percentageComplete = new TextView(this);
-            percentageComplete.setText(Integer.toString(myDb.getPercentageCompleteScene(sceneId)) + "% Complete");
-
-            workflowStepsLinLay.addView(percentageComplete);
-
-            fullSceneLinLay.addView(sceneInfoRelLay);
-            fullSceneLinLay.addView(workflowStepsLinLay);
+            fullSceneLinLay.setBackground(getResources().getDrawable(R.drawable.border));
 
             linearLayout.addView(fullSceneLinLay);
         }
