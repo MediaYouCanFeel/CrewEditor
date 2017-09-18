@@ -83,8 +83,6 @@ public class ProjectPage extends AppCompatActivity {
     protected void displayAllScenes() {
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.all_scenes_layout);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        llp.setMargins(0,15,0,15);
 
         Cursor res = myDb.getScenesForProject(projId);
         if (res.getCount() == 0) {
@@ -110,14 +108,27 @@ public class ProjectPage extends AppCompatActivity {
             fill_parent_width_params.weight = 1.0f;
             fill_parent_width_params.gravity = Gravity.CENTER;
 
+            LinearLayout.LayoutParams fill_parent_width_padded_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            fill_parent_width_padded_params.weight = 1.0f;
+            fill_parent_width_padded_params.gravity = Gravity.CENTER;
+            fill_parent_width_padded_params.setMargins(0,15,0,15);
+
             LinearLayout.LayoutParams fill_parent_height_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.FILL_PARENT);
-            fill_parent_width_params.weight = 1.0f;
-            fill_parent_width_params.gravity = Gravity.CENTER;
+            fill_parent_height_params.weight = 1.0f;
+            fill_parent_height_params.gravity = Gravity.CENTER;
+
+            LinearLayout.LayoutParams fill_parent_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+            fill_parent_params.weight = 1.0f;
+            fill_parent_params.gravity = Gravity.CENTER;
+
+            LinearLayout.LayoutParams heavier_params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+            heavier_params.weight = 2.0f;
+            heavier_params.gravity = Gravity.CENTER;
 
             //full layout
             LinearLayout fullSceneLinLay = new LinearLayout(this);
             fullSceneLinLay.setOrientation(LinearLayout.HORIZONTAL);
-            fullSceneLinLay.setLayoutParams(fill_parent_width_params);
+            fullSceneLinLay.setLayoutParams(fill_parent_width_padded_params);
 
             //Scene Number
             TextView sceneNumberTextView = new TextView(this);
@@ -144,6 +155,7 @@ public class ProjectPage extends AppCompatActivity {
             //Workflow Progress
             LinearLayout workflowLinLay = new LinearLayout(this);
             workflowLinLay.setOrientation(LinearLayout.HORIZONTAL);
+            workflowLinLay.setLayoutParams(fill_parent_params);
 
             //Workflow Steps
             LinearLayout workflowStepsLinLay = new LinearLayout(this);
@@ -158,13 +170,15 @@ public class ProjectPage extends AppCompatActivity {
                 workflowStepTextView.setText(myDb.getWorkflowStepAbbr(workflowStepIds[i]));
                 workflowStepTextView.setPadding(10, 0, 10, 0);
                 workflowStepTextView.setBackground(getResources().getDrawable(R.drawable.border));
+                workflowStepTextView.setLayoutParams(fill_parent_height_params);
                 workflowStepTextView.setGravity(Gravity.CENTER);
                 if (status[i].equals("TRUE")) {
-                    workflowStepTextView.setBackgroundColor(Color.BLUE);
+                    workflowStepTextView.setBackgroundColor(Color.DKGRAY);
+                    workflowStepTextView.setTextColor(Color.WHITE);
                 }
                 workflowStepsLinLay.addView(workflowStepTextView);
             }
-            workflowStepsLinLay.setLayoutParams(fill_parent_height_params);
+            workflowStepsLinLay.setLayoutParams(fill_parent_params);
 
             //Workflow Percentage Complete
             LinearLayout percentageCompleteLinLay = new LinearLayout(this);
@@ -172,12 +186,19 @@ public class ProjectPage extends AppCompatActivity {
 
             TextView percentageCompletePercentage = new TextView(this);
             percentageCompletePercentage.setText(Integer.toString(myDb.getPercentageCompleteScene(sceneId) )+ "%");
+            percentageCompletePercentage.setGravity(Gravity.CENTER_HORIZONTAL);
+            percentageCompletePercentage.setTextColor(Color.BLACK);
+            percentageCompletePercentage.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
 
             TextView percentageCompleteText = new TextView(this);
             percentageCompleteText.setText("complete");
+            percentageCompleteText.setGravity(Gravity.CENTER_HORIZONTAL);
+            percentageCompleteText.setTextColor(Color.BLACK);
 
             percentageCompleteLinLay.addView(percentageCompletePercentage);
             percentageCompleteLinLay.addView(percentageCompleteText);
+            percentageCompleteLinLay.setPadding(10,10,10,10);
+            percentageCompleteLinLay.setLayoutParams(heavier_params);
 
             workflowLinLay.addView(workflowStepsLinLay);
             workflowLinLay.addView(percentageCompleteLinLay);
