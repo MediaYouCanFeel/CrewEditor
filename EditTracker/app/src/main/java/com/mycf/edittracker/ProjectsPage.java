@@ -96,8 +96,15 @@ public class ProjectsPage extends AppCompatActivity {
         LinearLayout scenesLinearLayout = new LinearLayout(this);
         scenesLinearLayout.setOrientation(LinearLayout.VERTICAL);
 
-        scenesLinearLayout.addView(createNewLowerInfoTextView(Integer.toString(myDb.getNumberOfScenes(id)), true));
-        scenesLinearLayout.addView(createNewLowerInfoTextView("scenes", false));
+        int numOfScenes = myDb.getNumberOfScenes(id);
+        String scenesText = "scenes";
+
+        if (numOfScenes == 1) {
+            scenesText = "scene";
+        }
+
+        scenesLinearLayout.addView(createNewLowerInfoTextView(Integer.toString(numOfScenes), true));
+        scenesLinearLayout.addView(createNewLowerInfoTextView(scenesText, false));
         scenesLinearLayout.setBackground(getResources().getDrawable(R.drawable.border));
 
         //Percentage Complete
