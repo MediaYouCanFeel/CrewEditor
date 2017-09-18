@@ -267,7 +267,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getScenesForProject(String projId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + T2_COL_2 + "='" + projId + "'", null);
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + T2_COL_2 + "='" + projId + "' ORDER BY " + T2_COL_3, null);
         return res;
     }
 
@@ -277,7 +277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         return res.getString(0);
     }
-
+s
     public String getSceneLocation(String sceneId) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("SELECT " + T2_COL_4 + " FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId, null);
