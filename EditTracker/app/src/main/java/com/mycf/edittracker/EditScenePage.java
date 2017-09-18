@@ -1,6 +1,8 @@
 package com.mycf.edittracker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,9 @@ import java.util.HashMap;
 public class EditScenePage extends AppCompatActivity {
 
     DatabaseHelper myDb;
+
+    private String projId;
+    private String sceneId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +38,8 @@ public class EditScenePage extends AppCompatActivity {
         final ImageButton deleteButton = (ImageButton) findViewById(R.id.imageButton_delete_scene);
 
         Bundle b = getIntent().getExtras();
-        final String projId = b.getString("projectId");
-        final String sceneId = b.getString("sceneId");
+        projId = b.getString("projectId");
+        sceneId = b.getString("sceneId");
 
         String projectTitle = myDb.getProjectTitle(projId);
         projectTitleTextView.setText(projectTitle);
@@ -75,14 +80,31 @@ public class EditScenePage extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myDb.deleteScene(sceneId);
-                Intent intent = new Intent(EditScenePage.this, ProjectPage.class);
-                Bundle b = new Bundle();
-                b.putString("projectId", projId); //Your id
-                intent.putExtras(b); //Put your id to your next Intent
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage("Are you sure you want to delete this project permanently?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
             }
         });
 
     }
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    //Yes button clicked
+                    myDb.deleteScene(sceneId);
+                    Intent intent = new Intent(EditScenePage.this, ProjectPage.class);
+                    Bundle b = new Bundle();
+                    b.putString("projectId", projId); //Your id
+                    intent.putExtras(b); //Put your id to your next Intent
+                    startActivity(intent);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+            }
+        }
+    };
 }

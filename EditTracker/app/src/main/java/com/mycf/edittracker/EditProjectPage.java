@@ -1,8 +1,10 @@
 package com.mycf.edittracker;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.icu.util.Calendar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -25,6 +27,8 @@ public class EditProjectPage extends AppCompatActivity implements View.OnFocusCh
     private DatePickerDialog releaseDatePickerDialog;
     private SimpleDateFormat dateFormatter;
 
+    private String projId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +37,7 @@ public class EditProjectPage extends AppCompatActivity implements View.OnFocusCh
         myDb = new DatabaseHelper(this);
 
         Bundle b = getIntent().getExtras();
-        final String projId = b.getString("projectId");
+        projId = b.getString("projectId");
 
         final EditText projectTitleEditView = (EditText) findViewById(R.id.editText_edit_proj_title);
         projectReleaseEditText = (EditText) findViewById(R.id.editText_release_date);
@@ -51,7 +55,6 @@ public class EditProjectPage extends AppCompatActivity implements View.OnFocusCh
         projectReleaseEditText.setInputType(InputType.TYPE_NULL);
 
         dateFormatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
-
 
         setDateTimeField();
 
@@ -75,15 +78,34 @@ public class EditProjectPage extends AppCompatActivity implements View.OnFocusCh
             }
         });
 
+//        deleteButton.setOnClickListener(dialogClickListener);
+
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myDb.deleteProject(projId);
-                startActivity(new Intent(EditProjectPage.this, ProjectsPage.class));
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setMessage("Are you sure you want to delete this project permanently?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
             }
         });
 
     }
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    //Yes button clicked
+                    myDb.deleteProject(projId);
+                    startActivity(new Intent(EditProjectPage.this, ProjectsPage.class));
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+            }
+        }
+    };
 
     private void setDateTimeField() {
         projectReleaseEditText.setOnClickListener(this);
