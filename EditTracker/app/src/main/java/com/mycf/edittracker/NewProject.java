@@ -51,7 +51,7 @@ public class NewProject extends AppCompatActivity implements View.OnFocusChangeL
         newProjectCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(NewProject.this, ProjectPage.class));
+                startActivity(new Intent(NewProject.this, ProjectsPage.class));
             }
         });
     }
