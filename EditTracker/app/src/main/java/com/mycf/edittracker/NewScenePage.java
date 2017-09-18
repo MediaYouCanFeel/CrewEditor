@@ -47,18 +47,24 @@ public class NewScenePage extends AppCompatActivity {
         newSceneCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isInserted = myDb.insertNewScene(projId,
-                        newSceneNumber.getText().toString(),
-                        newSceneLocation.getText().toString(),
-                        newSceneTime.getText().toString());
-                if(isInserted) {
-                    Toast.makeText(NewScenePage.this, "New scene added", Toast.LENGTH_LONG).show();
+                boolean sceneNumberExists = myDb.sceneNumberExists(newSceneNumber.getText().toString().trim(), projId);
+
+                if (!sceneNumberExists) { //If scene num does not exist already
+                    boolean isInserted = myDb.insertNewScene(projId,
+                            newSceneNumber.getText().toString(),
+                            newSceneLocation.getText().toString(),
+                            newSceneTime.getText().toString());
+                    if (isInserted) {
+                        Toast.makeText(NewScenePage.this, "New scene added", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(NewScenePage.this, "ERROR", Toast.LENGTH_LONG).show();
+                    }
+                    HashMap<String, String> bundle = new HashMap<>();
+                    bundle.put("projectId", projId);
+                    CrewUtils.sendIntent(NewScenePage.this, ProjectPage.class, bundle);
                 } else {
-                    Toast.makeText(NewScenePage.this, "ERROR", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewScenePage.this, "Scene number already exists.", Toast.LENGTH_LONG).show();
                 }
-                HashMap<String, String> bundle = new HashMap<>();
-                bundle.put("projectId", projId);
-                CrewUtils.sendIntent(NewScenePage.this, ProjectPage.class, bundle);
             }
         });
 

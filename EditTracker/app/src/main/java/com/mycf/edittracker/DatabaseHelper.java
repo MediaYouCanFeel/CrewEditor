@@ -328,6 +328,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return convertStringToArray(statusStr);
     }
 
+    public boolean sceneNumberExists(String sceneNumber, String projectId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM " + TABLE_2_NAME + " WHERE " + T2_COL_2 + "=" + projectId + " AND " + T2_COL_3 + "='" + sceneNumber + "'", null);
+        int cnt = res.getCount();
+        res.close();
+
+        if (cnt == 0) {
+            return false;
+         } else {
+            return true;
+        }
+    }
+
     /**
      * Method to calculate and return the percentage complete of a scene.
      *

@@ -29,16 +29,6 @@
         android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"/>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        app:srcCompat="@drawable/crew_c" />
-
     <ScrollView
         android:id="@+id/all_projects_layout_scroll"
         android:layout_width="fill_parent"
