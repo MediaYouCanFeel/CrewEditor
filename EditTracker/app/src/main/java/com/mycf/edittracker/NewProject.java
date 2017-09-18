@@ -94,21 +94,25 @@ public class NewProject extends AppCompatActivity implements View.OnFocusChangeL
                     @Override
                     public void onClick(View v) {
                         boolean isInserted;
-                        String title = projectTitle.getText().toString();
-                        String releaseDate = projectReleaseDate.getText().toString();
+                        String title = projectTitle.getText().toString().trim();
+                        String releaseDate = projectReleaseDate.getText().toString().trim();
 
-                        if (releaseDate.isEmpty()) {
-                            isInserted = myDb.insertNewProject(title);
-                        } else {
-                            isInserted = myDb.insertNewProject(title, releaseDate);
-                        }
+                        if (title == null || title.isEmpty()) {
+                            Toast.makeText(NewProject.this, "Title cannot be empty", Toast.LENGTH_LONG).show();
+                        } else { //Title was entered
+                            if (releaseDate.isEmpty()) {
+                                isInserted = myDb.insertNewProject(title);
+                            } else {
+                                isInserted = myDb.insertNewProject(title, releaseDate);
+                            }
 
-                        if(isInserted) {
-                            Toast.makeText(NewProject.this, "New project added", Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(NewProject.this, "ERROR", Toast.LENGTH_LONG).show();
+                            if (isInserted) {
+                                Toast.makeText(NewProject.this, "New project added", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(NewProject.this, "ERROR", Toast.LENGTH_LONG).show();
+                            }
+                            startActivity(new Intent(NewProject.this, ProjectsPage.class));
                         }
-                        startActivity(new Intent(NewProject.this, ProjectsPage.class));
                     }
                 }
         );

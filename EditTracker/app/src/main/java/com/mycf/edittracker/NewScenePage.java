@@ -63,7 +63,7 @@ public class NewScenePage extends AppCompatActivity {
                     bundle.put("projectId", projId);
                     CrewUtils.sendIntent(NewScenePage.this, ProjectPage.class, bundle);
                 } else {
-                    Toast.makeText(NewScenePage.this, "Scene number already exists.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewScenePage.this, "Scene number already exists", Toast.LENGTH_LONG).show();
                 }
             }
         });
