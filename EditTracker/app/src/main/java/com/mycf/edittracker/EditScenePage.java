@@ -1,10 +1,12 @@
 package com.mycf.edittracker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class EditScenePage extends AppCompatActivity {
         final EditText newSceneNumber = (EditText) findViewById(R.id.editText_new_scene_number);
         final EditText newSceneLocation = (EditText) findViewById(R.id.editText_new_scene_location);
         final EditText newSceneTime = (EditText) findViewById(R.id.editText_new_scene_time);
+        final ImageButton deleteButton = (ImageButton) findViewById(R.id.imageButton_delete_scene);
 
         Bundle b = getIntent().getExtras();
         final String projId = b.getString("projectId");
@@ -66,6 +69,18 @@ public class EditScenePage extends AppCompatActivity {
                 bundle.put("projectId", projId);
                 bundle.put("sceneId", sceneId);
                 CrewUtils.sendIntent(EditScenePage.this, ScenePage.class, bundle);
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myDb.deleteScene(sceneId);
+                Intent intent = new Intent(EditScenePage.this, ProjectPage.class);
+                Bundle b = new Bundle();
+                b.putString("projectId", projId); //Your id
+                intent.putExtras(b); //Put your id to your next Intent
+                startActivity(intent);
             }
         });
 

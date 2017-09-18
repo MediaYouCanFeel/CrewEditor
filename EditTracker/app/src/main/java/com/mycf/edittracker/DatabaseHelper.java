@@ -210,6 +210,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public void deleteScene(String sceneId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_2_NAME + " WHERE " + T2_COL_1 + "=" + sceneId);
+    }
+
+
     public boolean addWorkflowToScene(String workflowId, String sceneId) {
         sceneId = sceneId.trim();
         workflowId = workflowId.trim();
