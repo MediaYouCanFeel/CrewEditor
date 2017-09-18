@@ -24,8 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="EDIT"
-        android:layout_alignTop="@+id/textView_project_title"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:layout_alignParentEnd="true" />
 
     <Button

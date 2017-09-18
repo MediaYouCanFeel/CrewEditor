@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,7 +48,10 @@ public class ScenePage extends AppCompatActivity {
         TextView locationTextView = (TextView) findViewById(R.id.textView_scene_location);
         locationTextView.setText(sceneLocation + " - " + sceneTime);
 
-        ImageButton editSceneButton = (ImageButton) findViewById(R.id.imageButton_edit_scene);
+        Button editSceneButton = (Button) findViewById(R.id.button_edit_scene);
+        editSceneButton.setTypeface(FontManager.getTypeface(this, FontManager.FONTAWESOME));
+        editSceneButton.setText(getResources().getString(R.string.fa_icon_pencil));
+        editSceneButton.setAutoSizeTextTypeWithDefaults(Button.AUTO_SIZE_TEXT_TYPE_UNIFORM);
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout_workflow);
 

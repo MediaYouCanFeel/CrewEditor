@@ -16,7 +16,7 @@ public class Home extends AppCompatActivity {
     DatabaseHelper myDb;
 
     private static final String BUILD_TYPE = "NORMAL";
-    private static final String VERSION_NAME = "a0.2";
+    private static final String VERSION_NAME = "a0.2.1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

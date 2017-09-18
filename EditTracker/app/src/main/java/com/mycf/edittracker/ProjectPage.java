@@ -11,7 +11,6 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,7 +40,8 @@ public class ProjectPage extends AppCompatActivity {
         Button editProjectButton = (Button) findViewById(R.id.button_edit_project);
         editProjectButton.setTypeface(FontManager.getTypeface(this, FontManager.FONTAWESOME));
         editProjectButton.setText(getResources().getString(R.string.fa_icon_pencil));
-        editProjectButton.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+        editProjectButton.setAutoSizeTextTypeWithDefaults(Button.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+
         Button addSceneButton = (Button) findViewById(R.id.button_add_scene);
 
         displayAllScenes();
