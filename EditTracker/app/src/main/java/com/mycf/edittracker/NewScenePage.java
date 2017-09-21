@@ -1,7 +1,10 @@
 package com.mycf.edittracker;
 
+import android.graphics.Color;
+import android.support.constraint.solver.SolverVariable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,8 @@ public class NewScenePage extends AppCompatActivity {
         TextView projectTitleTextView = (TextView) findViewById(R.id.textView_proj_title);
         Button newSceneCreateButton = (Button) findViewById(R.id.edit_scene_create_button);
         Button newSceneCancelButton = (Button) findViewById(R.id.edit_scene_cancel_button);
+
+        projectTitleTextView.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
 
         final EditText newSceneNumber = (EditText) findViewById(R.id.editText_new_scene_number);
         final EditText newSceneLocation = (EditText) findViewById(R.id.editText_new_scene_location);

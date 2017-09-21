@@ -32,6 +32,8 @@ public class EditScenePage extends AppCompatActivity {
         Button editSceneSaveButton = (Button) findViewById(R.id.edit_scene_create_button);
         Button editSceneCancelButton = (Button) findViewById(R.id.edit_scene_cancel_button);
 
+        projectTitleTextView.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
+
         final EditText newSceneNumber = (EditText) findViewById(R.id.editText_new_scene_number);
         final EditText newSceneLocation = (EditText) findViewById(R.id.editText_new_scene_location);
         final EditText newSceneTime = (EditText) findViewById(R.id.editText_new_scene_time);
@@ -81,7 +83,7 @@ public class EditScenePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                builder.setMessage("Are you sure you want to delete this project permanently?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
+                builder.setMessage("Are you sure you want to delete this scene permanently?").setPositiveButton("Yes", dialogClickListener).setNegativeButton("No", dialogClickListener).show();
             }
         });
 

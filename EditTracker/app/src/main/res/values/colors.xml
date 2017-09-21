@@ -8,4 +8,6 @@
     <color name="darkBlue">#06246A</color>
     <color name="yellow">#FFD300</color>
     <color name="orange">#FF7400</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

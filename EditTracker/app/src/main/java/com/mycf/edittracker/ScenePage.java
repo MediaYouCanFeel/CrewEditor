@@ -38,6 +38,7 @@ public class ScenePage extends AppCompatActivity {
         String projectTitle = myDb.getProjectTitle(projId);
         TextView projectTitleTextView = (TextView) findViewById(R.id.textView_scene_project_title);
         projectTitleTextView.setText(projectTitle);
+        projectTitleTextView.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
 
         String sceneNumber = myDb.getSceneNumber(sceneId);
         TextView numberTextView = (TextView) findViewById(R.id.textView_scene_number);

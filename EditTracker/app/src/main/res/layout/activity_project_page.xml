@@ -8,16 +8,19 @@
 
     <TextView
         android:id="@+id/textView_project_title"
-        android:layout_width="wrap_content"
+        android:background="@color/blue"
+        android:textAlignment="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
         android:text="Project_Title"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:textSize="28sp"
+        android:textSize="32dp"
         android:textAllCaps="true"/>
 
     <Button

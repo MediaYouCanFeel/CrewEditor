@@ -13,6 +13,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -48,9 +51,13 @@ public class EditProjectPage extends AppCompatActivity implements View.OnFocusCh
         final String projectReleaseDate = myDb.getProjectReleaseDate(projId);
         projectReleaseEditText.setText(projectReleaseDate);
 
+        final TextView projectTitleTextView = (TextView) findViewById(R.id.textView_edit_proj_title_disp);
         final Button saveEditButton = (Button) findViewById(R.id.edit_project_save_button);
         final ImageButton deleteButton = (ImageButton) findViewById(R.id.imageButton_delete_proj);
         final Button cancelEditButton = (Button) findViewById(R.id.edit_project_cancel_button);
+
+        projectTitleTextView.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
+        projectTitleTextView.setText(projectTitle);
 
         projectReleaseEditText.setInputType(InputType.TYPE_NULL);
 
