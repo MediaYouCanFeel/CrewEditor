@@ -17,7 +17,8 @@
         android:textColor="@android:color/black"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
-        android:textSize="28sp"/>
+        android:textSize="28sp"
+        android:textAllCaps="true"/>
 
     <Button
         android:id="@+id/button_edit_project"

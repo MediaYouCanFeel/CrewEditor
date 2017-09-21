@@ -40,6 +40,9 @@ public class ProjectPage extends AppCompatActivity {
         final String projectTitle = myDb.getProjectTitle(projId);
 
         projectTitleTextView.setText(projectTitle);
+        projectTitleTextView.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
+        projectTitleTextView.setTextColor(Color.BLACK);
+        projectTitleTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
 
         Button editProjectButton = (Button) findViewById(R.id.button_edit_project);
         editProjectButton.setTypeface(FontManager.getTypeface(this, FontManager.FONTAWESOME));
@@ -58,6 +61,7 @@ public class ProjectPage extends AppCompatActivity {
         releaseDateTextView.setText(releaseDateText);
 
         Button addSceneButton = (Button) findViewById(R.id.button_add_scene);
+        addSceneButton.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
 
         displayAllScenes();
 

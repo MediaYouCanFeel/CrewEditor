@@ -26,6 +26,9 @@ public class Home extends AppCompatActivity {
         Button myProjectsButton = (Button) findViewById(R.id.my_projects_button);
         Button settingsButton = (Button) findViewById(R.id.button_settings);
 
+        myProjectsButton.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
+        settingsButton.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
+
         TextView footer = (TextView) findViewById(R.id.textView_MYCF);
         footer.setText("Media You Can Feel, LLC \nAlpha Build: " + VERSION_NAME);
         footer.setGravity(Gravity.CENTER);

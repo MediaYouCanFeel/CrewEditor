@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -31,6 +32,12 @@ public class ProjectsPage extends AppCompatActivity {
         ScrollView scrollView = (ScrollView) findViewById(R.id.all_projects_layout_scroll);
         TextView titleView = (TextView) findViewById(R.id.textView_my_projects);
         Button newProjectButton = (Button) findViewById(R.id.new_project_button);
+
+        titleView.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
+        titleView.setTextColor(Color.BLACK);
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
+
+        newProjectButton.setTypeface(FontManager.getTypeface(this, FontManager.POPPINS_SEMIBOLD));
 
         displayAllProjects();
 
